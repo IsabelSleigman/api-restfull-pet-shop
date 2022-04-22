@@ -21,9 +21,16 @@ module.exports = {
 
         return encontrado
     },
-    async atualizar(id, dadosParaAtualizar) {
+    atualizar(id, dadosParaAtualizar) {
         return Modelo.update(
             dadosParaAtualizar,
+            {
+                where: { id: id }
+            }
+        )
+    },
+    remover(id) {
+        return Modelo.destroy(
             {
                 where: { id: id }
             }
