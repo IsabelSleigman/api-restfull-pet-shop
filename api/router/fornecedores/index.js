@@ -8,6 +8,22 @@ router.get('/', async (requisicao, resposta) => {
         JSON.stringify(resultado)
     )
 })
+router.get('/:idFornecedor', async (requisicao, resposta) => {
+    try {
+        const id = requisicao.params.idFornecedor
+        const fornecedor = new Fornecedor({ id: id })
+        await fornecedor.carregar()
+        resposta.send(
+            JSON.stringify(fornecedor)
+        )
+    } catch (error) {
+        resposta.send(
+            JSON.stringify({
+                mensagem: error.message
+            })
+        )
+    }
+})
 
 router.post('/', async (requisicao, resposta) => {
     const dadosRecebidos = requisicao.body;
