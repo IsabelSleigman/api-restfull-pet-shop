@@ -9,7 +9,8 @@ module.exports = {
     },
     async pegarPorId(id) {
         const encontrado = await Modelo.findOne({
-            where: {
+            where:
+            {
                 id: id
             }
         })
