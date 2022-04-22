@@ -8,7 +8,7 @@ module.exports = {
         return Modelo.create(fornecedor)
     },
     async pegarPorId(id) {
-        const encontrado = Modelo.findOne({
+        const encontrado = await Modelo.findOne({
             where: {
                 id: id
             }
