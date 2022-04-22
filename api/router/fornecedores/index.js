@@ -25,6 +25,13 @@ router.get('/:idFornecedor', async (requisicao, resposta) => {
     }
 })
 
+router.post('/', async (requisicao, resposta) => {
+    const dadosRecebidos = requisicao.body;
+    const fornecedor = new Fornecedor(dadosRecebidos)
+    await fornecedor.criar();
+    resposta.send(JSON.stringify(fornecedor))
+})
+
 router.put('/:idFornecedor', async (requisicao, resposta) => {
     try {
         const id = requisicao.params.idFornecedor
@@ -36,18 +43,28 @@ router.put('/:idFornecedor', async (requisicao, resposta) => {
 
     } catch (error) {
         resposta.send(
-            Json.stringify({
+            JSON.stringify({
                 mensagem: error.message
             })
         )
     }
 })
 
-router.post('/', async (requisicao, resposta) => {
-    const dadosRecebidos = requisicao.body;
-    const fornecedor = new Fornecedor(dadosRecebidos)
-    await fornecedor.criar();
-    resposta.send(JSON.stringify(fornecedor))
+router.delete('/:idFornecedor', async (requisicao, resposta) => {
+    try {
+        const id = requisicao.params.idFornecedor
+        const fornecedor = new Fornecedor({ id: id })
+        await fornecedor.carregar()
+        await fornecedor.remover()
+        resposta.end()
+
+    } catch (error) {
+        resposta.send(
+            JSON.stringify({
+                mensagem: error.message
+            })
+        )
+    }
 })
 
 module.exports = router
