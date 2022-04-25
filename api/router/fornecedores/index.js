@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const TabelaFornecedor = require('./TabelaFornecedor');
 const Fornecedor = require('./Fornecedor')
+const NaoEncontrado = require('../../erros/NaoEncontrado');
 
 router.get('/', async (requisicao, resposta) => {
     const resultado = await TabelaFornecedor.listar()
@@ -47,7 +48,7 @@ router.post('/', async (requisicao, resposta) => {
     }
 })
 
-router.put('/:idFornecedor', async (requisicao, resposta) => {
+router.put('/:idFornecedor', async (requisicao, resposta, proximo) => {
     try {
         const id = requisicao.params.idFornecedor
         const dadosRecebidos = requisicao.body
@@ -58,12 +59,7 @@ router.put('/:idFornecedor', async (requisicao, resposta) => {
         resposta.end()
 
     } catch (error) {
-        resposta.status(400)
-        resposta.send(
-            JSON.stringify({
-                mensagem: error.message
-            })
-        )
+        proximo(erro)
     }
 })
 
