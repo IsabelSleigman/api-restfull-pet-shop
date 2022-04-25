@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const TabelaFornecedor = require('./TabelaFornecedor');
 const Fornecedor = require('./Fornecedor')
-const NaoEncontrado = require('../../erros/NaoEncontrado');
 
 router.get('/', async (requisicao, resposta) => {
     const resultado = await TabelaFornecedor.listar()
@@ -11,7 +10,7 @@ router.get('/', async (requisicao, resposta) => {
     )
 })
 
-router.get('/:idFornecedor', async (requisicao, resposta) => {
+router.get('/:idFornecedor', async (requisicao, resposta, proximo) => {
     try {
         const id = requisicao.params.idFornecedor
         const fornecedor = new Fornecedor({ id: id })
@@ -21,16 +20,11 @@ router.get('/:idFornecedor', async (requisicao, resposta) => {
             JSON.stringify(fornecedor)
         )
     } catch (error) {
-        resposta.status(404)
-        resposta.send(
-            JSON.stringify({
-                mensagem: error.message
-            })
-        )
+        proximo(error)
     }
 })
 
-router.post('/', async (requisicao, resposta) => {
+router.post('/', async (requisicao, resposta, proximo) => {
     try {
         const dadosRecebidos = requisicao.body;
         const fornecedor = new Fornecedor(dadosRecebidos)
@@ -39,12 +33,7 @@ router.post('/', async (requisicao, resposta) => {
         resposta.send(JSON.stringify(fornecedor))
 
     } catch (error) {
-        resposta.status(400)
-        resposta.send(
-            JSON.stringify({
-                mensagem: error.message
-            })
-        )
+        proximo(error)
     }
 })
 
@@ -59,11 +48,11 @@ router.put('/:idFornecedor', async (requisicao, resposta, proximo) => {
         resposta.end()
 
     } catch (error) {
-        proximo(erro)
+        proximo(error)
     }
 })
 
-router.delete('/:idFornecedor', async (requisicao, resposta) => {
+router.delete('/:idFornecedor', async (requisicao, resposta, proximo) => {
     try {
         const id = requisicao.params.idFornecedor
         const fornecedor = new Fornecedor({ id: id })
@@ -73,12 +62,7 @@ router.delete('/:idFornecedor', async (requisicao, resposta) => {
         resposta.end()
 
     } catch (error) {
-        resposta.status(404)
-        resposta.send(
-            JSON.stringify({
-                mensagem: error.message
-            })
-        )
+        proximo(error)
     }
 })
 
