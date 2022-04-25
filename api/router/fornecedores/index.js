@@ -9,6 +9,7 @@ router.get('/', async (requisicao, resposta) => {
         JSON.stringify(resultado)
     )
 })
+
 router.get('/:idFornecedor', async (requisicao, resposta) => {
     try {
         const id = requisicao.params.idFornecedor
@@ -19,6 +20,7 @@ router.get('/:idFornecedor', async (requisicao, resposta) => {
             JSON.stringify(fornecedor)
         )
     } catch (error) {
+        resposta.status(404)
         resposta.send(
             JSON.stringify({
                 mensagem: error.message
@@ -36,6 +38,7 @@ router.post('/', async (requisicao, resposta) => {
         resposta.send(JSON.stringify(fornecedor))
 
     } catch (error) {
+        resposta.status(400)
         resposta.send(
             JSON.stringify({
                 mensagem: error.message
@@ -55,6 +58,7 @@ router.put('/:idFornecedor', async (requisicao, resposta) => {
         resposta.end()
 
     } catch (error) {
+        resposta.status(400)
         resposta.send(
             JSON.stringify({
                 mensagem: error.message
@@ -73,6 +77,7 @@ router.delete('/:idFornecedor', async (requisicao, resposta) => {
         resposta.end()
 
     } catch (error) {
+        resposta.status(404)
         resposta.send(
             JSON.stringify({
                 mensagem: error.message
